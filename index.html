@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpOrMe — Global Connection Checker</title>
+    
+    <!-- ⚡ SEKME LOGOSU (FAVICON) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⚡</text></svg>">
+
+    <!-- 🌐 GOOGLE VE SOSYAL MEDYA İÇİN SİTEYE GİRMEDEN ÖNCEKİ GÖRÜNÜM (META TAGS) -->
+    <meta name="description" content="UpOrMe — Free, instant, and minimalist global connection checker. Find out if your internet is down or a website is dead in milliseconds.">
+    <meta name="keywords" content="internet test, connection checker, is it down, ping check, wifi test, speed check, isitdown, uporme">
+    <meta name="author" content="UpOrMe Team">
+
+    <!-- Discord, WhatsApp, Reddit Kart Görünümü (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="UpOrMe — Global Connection Checker">
+    <meta property="og:description" content="Instantly check if your internet connection is working or a website is dead. 100% free and ad-free.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600">
+
+    <!-- Twitter / X Kart Görünümü -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UpOrMe — Global Connection Checker">
+    <meta name="twitter:description" content="Tired of slow status checkers? Try the fastest, minimalist, multi-language connection checker on the web.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600">
+
+    <!-- Ücretsiz İkon Kütüphanesi -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #060913;
+            --card: #0f1424;
+            --border: #1e2640;
+            --text: #f1f5f9;
+            --text-muted: #64748b;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+            overflow: hidden; /* Sağdaki scrollbar'ı yok ettik kanka */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .logo-area {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: #a5b4fc;
+            display: inline-block;
+            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.6));
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.6)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.9)); }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 0 0 12px 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #a5b4fc, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin: 0 0 32px 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .main-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: var(--accent);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+
+        .main-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .result-box {
+            margin-top: 32px;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.01);
+            display: none;
+        }
+
+        .status-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .status-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .online {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .online .status-title { color: var(--success); }
+
+        .offline {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        .offline .status-title { color: var(--danger); }
+
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .lang-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #1e2640;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lang-badge" id="lang-badge">EN</div>
+
+    <div class="container">
+        <div class="logo-area">
+            <i class="fa-solid fa-bolt-lightning"></i>
+        </div>
+        
+        <h1 id="ui-title">UpOrMe</h1>
+        <p id="ui-subtitle">Instantly check if your internet connection is working or a website is dead.</p>
+
+        <button class="main-btn" id="check-btn" onclick="checkConnection()">CHECK MY CONNECTION</button>
+
+        <div class="spinner" id="loading-spinner"></div>
+
+        <div class="result-box" id="result-box">
+            <div class="status-title" id="status-title">Checking...</div>
+            <div class="status-desc" id="status-desc">Please wait.</div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                subtitle: "Instantly check if your internet connection is working or a website is dead.",
+                btnConnect: "CHECK MY CONNECTION",
+                btnTesting: "TESTING...",
+                btnAgain: "CHECK AGAIN",
+                onlineTitle: "🟢 IT'S JUST YOU!",
+                onlineDesc: "Your internet connection is completely fine and running fast. The app or website you are trying to reach is currently down for everyone.",
+                offlineTitle: "🔴 YOU ARE OFFLINE!",
+                offlineDesc: "We couldn't reach global servers. Please check your Wi-Fi router, local network cables, or internet provider quota."
+            },
+            tr: {
+                subtitle: "İnternet bağlantınızın mı koptuğunu yoksa girmeye çalıştığınız sitenin mi çöktüğünü anında kontrol edin.",
+                btnConnect: "BAĞLANTIYI KONTROL ET",
+                btnTesting: "TEST EDİLİYOR...",
+                btnAgain: "TEKRAR TEST ET",
+                onlineTitle: "🟢 SORUN SADECE SİTEDE!",
+                onlineDesc: "İnternet bağlantınız canavar gibi çalışıyor. Girmeye çalıştığınız platform veya web sitesi şu anda genel olarak çökmüş durumda.",
+                offlineTitle: "🔴 İNTERNETİNİZ YOK!",
+                offlineDesc: "Küresel sunuculara ulaşamadık. Lütfen Wi-Fi yönlendiricinizi, yerel ağ kablolarınızı veya internet paketinizi kontrol edin kanka."
+            },
+            fr: {
+                subtitle: "Vérifiez instantanément si votre connexion Internet fonctionne ou si un site Web est en panne.",
+                btnConnect: "VÉRIFIER MA CONNEXION",
+                btnTesting: "ANALYSE...",
+                btnAgain: "VÉRIFIER À NOUVEAU",
+                onlineTitle: "🟢 C'EST JUSTE VOUS!",
+                onlineDesc: "Votre connexion Internet est tout à fait normale. L'application ou le site que vous essayez de joindre est actuellement en panne pour tout le monde.",
+                offlineTitle: "🔴 VOUS ÊTES HORS LIGNE!",
+                offlineDesc: "Impossible de joindre les serveurs mondiaux. Veuillez vérifier votre routeur Wi-Fi ou vos câbles réseau."
+            }
+        };
+
+        let userLang = navigator.language || navigator.userLanguage;
+        userLang = userLang.substring(0, 2).toLowerCase();
+
+        if (!translations[userLang]) {
+            userLang = 'en';
+        }
+
+        const currentText = translations[userLang];
+        document.getElementById('lang-badge').innerText = userLang;
+        document.getElementById('ui-subtitle').innerText = currentText.subtitle;
+        document.getElementById('check-btn').innerText = currentText.btnConnect;
+
+        async function checkConnection() {
+            const btn = document.getElementById('check-btn');
+            const spinner = document.getElementById('loading-spinner');
+            const resultBox = document.getElementById('result-box');
+
+            btn.disabled = true;
+            btn.innerText = currentText.btnTesting;
+            resultBox.style.display = "none";
+            spinner.style.display = "block";
+
+            if (!navigator.onLine) {
+                showResult(false);
+                return;
+            }
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+                await fetch('https://1.1.1.1/cdn-cgi/trace', { 
+                    mode: 'no-cors', 
+                    cache: 'no-store',
+                    signal: controller.signal 
+                });
+                
+                clearTimeout(timeoutId);
+                showResult(true);
+            } catch (error) {
+                showResult(false);
+            }
+        }
+
+        function showResult(isOnline) {
+            const btn = document.getElementById('check-btn');
+            const spinner = document.getElementById('loading-spinner');
+            const resultBox = document.getElementById('result-box');
+            const title = document.getElementById('status-title');
+            const desc = document.getElementById('status-desc');
+
+            spinner.style.display = "none";
+            btn.disabled = false;
+            btn.innerText = currentText.btnAgain;
+            resultBox.style.display = "block";
+
+            if (isOnline) {
+                resultBox.className = "result-box online";
+                title.innerText = currentText.onlineTitle;
+                desc.innerText = currentText.onlineDesc;
+            } else {
+                resultBox.className = "result-box offline";
+                title.innerText = currentText.offlineTitle;
+                desc.innerText = currentText.offlineDesc;
+            }
+        }
+    </script>
+</body>
+</html>

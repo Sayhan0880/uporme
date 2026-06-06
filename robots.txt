@@ -1,3 +1,5 @@
 ﻿User-agent: *
 Allow: /
-Sitemap: https://up-or-me.vercel.app/sitemap.xml
+
+# Google botlarına site haritamızın yerini gösteriyoruz kanka
+Sitemap: https://uporme.vercel.app/sitemap.xml

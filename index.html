@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tarayıcı sekmesindeki o jilet gibi başlık -->
     <title>UpOrMe — Global Connection Checker</title>
     
     <!-- ⚡ SEKME LOGOSU (FAVICON) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⚡</text></svg>">
 
-    <!-- 🌐 GOOGLE VE SOSYAL MEDYA İÇİN SİTEYE GİRMEDEN ÖNCEKİ GÖRÜNÜM (META TAGS) -->
+    <!-- 🌐 DOMAINE ÖZEL SEO VE SOSYAL MEDYA ÖNİZLEME KARTLARI -->
     <meta name="description" content="UpOrMe — Free, instant, and minimalist global connection checker. Find out if your internet is down or a website is dead in milliseconds.">
     <meta name="keywords" content="internet test, connection checker, is it down, ping check, wifi test, speed check, isitdown, uporme">
     <meta name="author" content="UpOrMe Team">
 
-    <!-- Discord, WhatsApp, Reddit Kart Görünümü (Open Graph) -->
+    <!-- Discord, WhatsApp, Reddit ve Twitter Kart Görünümleri İçin Resmi URL Tanımlaması -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://uporme.vercel.app/">
     <meta property="og:title" content="UpOrMe — Global Connection Checker">
     <meta property="og:description" content="Instantly check if your internet connection is working or a website is dead. 100% free and ad-free.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600">
 
-    <!-- Twitter / X Kart Görünümü -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://uporme.vercel.app/">
     <meta name="twitter:title" content="UpOrMe — Global Connection Checker">
     <meta name="twitter:description" content="Tired of slow status checkers? Try the fastest, minimalist, multi-language connection checker on the web.">
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600">
 
-    <!-- Ücretsiz İkon Kütüphanesi -->
+    <!-- Ücretsiz İkon Kütüphanesi (Yıldırım Logosu İçin) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -52,7 +54,7 @@
             align-items: center;
             min-height: 100vh;
             justify-content: center;
-            overflow: hidden; /* Sağdaki scrollbar'ı yok ettik kanka */
+            overflow: hidden; /* Sağdaki gıcık scrollbar'ı tamamen kapatan kod kanka */
         }
 
         .container {
@@ -66,6 +68,7 @@
             text-align: center;
         }
 
+        /* ⚡ Parlayan ve Hafifçe Büyüyüp Küçülen Yıldırım Logosu */
         .logo-area {
             font-size: 3.5rem;
             margin-bottom: 15px;
@@ -179,6 +182,7 @@
 </head>
 <body>
 
+    <!-- Otomatik algılanan dili gösteren sağ üst rozet -->
     <div class="lang-badge" id="lang-badge">EN</div>
 
     <div class="container">
@@ -200,6 +204,7 @@
     </div>
 
     <script>
+        // Küresel Dil Sözlüğü
         const translations = {
             en: {
                 subtitle: "Instantly check if your internet connection is working or a website is dead.",
@@ -233,6 +238,7 @@
             }
         };
 
+        // Dil algılama mekanizması
         let userLang = navigator.language || navigator.userLanguage;
         userLang = userLang.substring(0, 2).toLowerCase();
 
@@ -264,6 +270,7 @@
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 4000);
 
+                // Tarayıcı önbelleğini atlatmak için taze istek atıyoruz kanka
                 await fetch('https://1.1.1.1/cdn-cgi/trace', { 
                     mode: 'no-cors', 
                     cache: 'no-store',
